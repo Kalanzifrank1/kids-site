@@ -1,43 +1,129 @@
-// src/components/Header.tsx
-import React from 'react';
-import { Button } from '@/components/ui/button'; // Assuming shadcn/ui button component
+"use client";
+import React from "react";
+import Link from "next/link";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const Header: React.FC = () => {
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
+];
+
+export default function Header() {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <header className="bg-gradient-to-r from-pink-400 to-purple-500 text-white p-4 shadow-lg sticky top-0 z-50 rounded-b-xl">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        {/* Logo or Company Name */}
-        <div className="text-3xl font-extrabold flex items-center gap-2">
-          {/* Using a simple SVG for a playful logo */}
-          <svg className="w-8 h-8 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-2a1 1 0 10-2 0 1 1 0 002 0zm-7 4a1 1 0 00-1 1v1a1 1 0 102 0v-1a1 1 0 00-1-1zm3 0a1 1 0 00-1 1v1a1 1 0 102 0v-1a1 1 0 00-1-1zm3 0a1 1 0 00-1 1v1a1 1 0 102 0v-1a1 1 0 00-1-1z" clipRule="evenodd" />
-            <path d="M10 12.5a2.5 2.5 0 00-5 0c0 .72.29 1.4.78 1.9L5.5 14h9l-.28-.6c.49-.5.78-1.18.78-1.9a2.5 2.5 0 00-5 0z" />
-          </svg>
-          <span className="drop-shadow-md">KidzJoy Events</span>
-        </div>
+    <header className="bg-gradient-to-b from-[#ede9fe] via-[#f3e8ff] to-[#e0e7ff] text-[#22223b] shadow-lg sticky top-0 z-50 rounded-b-3xl border-b-0 p-0 m-0">
+      <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-[#7c3aed] via-[#38bdf8] to-[#fbbf24] shadow-md group-hover:scale-105 transition-transform duration-200">
+            {/* Modern minimal star icon for logo */}
+            <svg
+              className="w-7 h-7 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <polygon
+                points="12,2 15,9 22,9.5 17,14.5 18.5,22 12,18 5.5,22 7,14.5 2,9.5 9,9"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span className="text-2xl font-extrabold tracking-tight group-hover:text-[#7c3aed] transition-colors duration-200">
+            KidzJoy
+          </span>
+        </Link>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex space-x-6 text-lg font-semibold">
-          <a href="#services" className="hover:text-yellow-300 transition duration-300">Services</a>
-          <a href="#packages" className="hover:text-yellow-300 transition duration-300">Packages</a>
-          <a href="#gallery" className="hover:text-yellow-300 transition duration-300">Gallery</a>
-          <a href="#about" className="hover:text-yellow-300 transition duration-300">About Us</a>
-          <a href="#faq" className="hover:text-yellow-300 transition duration-300">FAQ</a>
-          <a href="#contact" className="hover:text-yellow-300 transition duration-300">Contact</a>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-2 lg:gap-4">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="relative px-3 py-1.5 rounded-lg font-semibold text-base text-[#5e60ce] hover:text-[#7c3aed] transition-colors duration-200 focus:outline-none group"
+            >
+              <span>{link.name}</span>
+              <span className="absolute left-1/2 -bottom-1 w-0 h-0.5 bg-[#7c3aed] rounded-full transition-all duration-300 group-hover:w-3/4 group-hover:left-1/8" />
+            </Link>
+          ))}
         </nav>
 
-        {/* Mobile Navigation Button (Hamburger Icon) */}
+        {/* Mobile Nav Button */}
         <div className="md:hidden">
-          <Button variant="ghost" className="text-white hover:bg-white/20">
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
+          <Button
+            variant="ghost"
+            className="text-[#7c3aed] hover:bg-[#e0e7ff] p-2"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Open menu"
+          >
+            <Menu className="w-7 h-7" />
           </Button>
-          {/* You would typically implement a mobile menu overlay/drawer here */}
         </div>
       </div>
+      {/* Mobile Menu Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex flex-col items-end md:hidden"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="w-3/4 max-w-xs bg-white rounded-l-2xl shadow-2xl h-full flex flex-col py-8 px-6 gap-6 animate-[slideIn_0.3s_cubic-bezier(0.4,0,0.2,1)_both]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Link
+              href="/"
+              className="flex items-center gap-2 mb-6"
+              onClick={() => setOpen(false)}
+            >
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#7c3aed] via-[#38bdf8] to-[#fbbf24] shadow-md">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="#fbbf24"
+                  />
+                  <circle cx="9" cy="10" r="1" fill="#7c3aed" />
+                  <circle cx="15" cy="10" r="1" fill="#7c3aed" />
+                  <path
+                    d="M8.5 15c1.5-1 5.5-1 7 0"
+                    stroke="#7c3aed"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+              <span className="text-xl font-extrabold tracking-tight text-[#7c3aed]">
+                KidzJoy
+              </span>
+            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="px-2 py-3 rounded-lg font-semibold text-lg text-[#5e60ce] hover:text-[#7c3aed] transition-colors duration-200"
+                onClick={() => setOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
-};
-
-export default Header;
+}
